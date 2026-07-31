@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iniciar sesión · Centro Ibero Meneses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     TOKENS — cambia aquí la fuente o los colores
+     ============================================ */
+  :root {
+    --font-main: 'Inter', -apple-system, sans-serif; /* <- cambia la tipografía aquí */
+
+    --ink: #111111;
+    --graphite: #3d3d3d;
+    --steel: #8a8b8b;
+    --mist: #d8d9d9;
+    --mist-soft: #eceded;
+    --pearl: #f5f5f4;
+    --white: #ffffff;
+
+    --radius-lg: 24px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-main);
+    background: var(--pearl);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 24px;
+  }
+
+  /* Diamante decorativo de fondo, eco del logo */
+  .bg-shape {
+    position: absolute;
+    width: 620px;
+    height: 620px;
+    border: 2px solid var(--mist);
+    border-radius: 32%;
+    transform: rotate(45deg);
+    top: -180px;
+    right: -220px;
+    opacity: 0.5;
+  }
+  .bg-shape.small {
+    width: 340px;
+    height: 340px;
+    border-color: var(--mist-soft);
+    top: auto;
+    right: auto;
+    bottom: -140px;
+    left: -140px;
+  }
+
+  .card {
+    position: relative;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 60px rgba(17, 17, 17, 0.08), 0 2px 8px rgba(17, 17, 17, 0.04);
+    padding: 48px 40px 40px;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .logo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 36px;
+  }
+  .logo-wrap img {
+    height: 42px;
+    width: auto;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: center;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 13.5px;
+    color: var(--steel);
+    text-align: center;
+    margin-bottom: 32px;
+    font-weight: 500;
+  }
+
+  form { display: flex; flex-direction: column; gap: 18px; }
+
+  .field label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--graphite);
+    margin-bottom: 7px;
+    letter-spacing: 0.01em;
+  }
+
+  .input-shell {
+    display: flex;
+    align-items: center;
+    background: var(--pearl);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    padding: 0 14px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .input-shell:focus-within {
+    border-color: var(--ink);
+    background: var(--white);
+  }
+
+  .input-shell svg {
+    flex-shrink: 0;
+    stroke: var(--steel);
+    transition: stroke 0.15s ease;
+  }
+
+  .input-shell:focus-within svg { stroke: var(--ink); }
+
+  .input-shell input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-main);
+    font-size: 14.5px;
+    color: var(--ink);
+    padding: 13px 10px;
+    width: 100%;
+  }
+
+  .input-shell input::placeholder { color: #b4b5b5; }
+
+  .toggle-pass {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    flex-shrink: 0;
+  }
+
+  .toggle-pass svg { stroke: var(--steel); }
+  .toggle-pass:hover svg { stroke: var(--ink); }
+
+  .remember-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: -4px;
+  }
+
+  .remember-row input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 17px;
+    height: 17px;
+    border: 1.5px solid var(--mist);
+    border-radius: 5px;
+    background: var(--pearl);
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .remember-row input[type="checkbox"]:checked {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+
+  .remember-row input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--white);
+    border-width: 0 1.8px 1.8px 0;
+    transform: rotate(45deg);
+  }
+
+  .remember-row label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--graphite);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .btn-login {
+    margin-top: 8px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    font-family: var(--font-main);
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+
+  .btn-login:hover { background: var(--graphite); }
+  .btn-login:active { transform: scale(0.98); }
+
+  .foot-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--steel);
+    margin-top: 28px;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-shape"></div>
+  <div class="bg-shape small"></div>
+
+  <div class="card">
+    <div class="logo-wrap">
+      <img src="assets/logo.png" alt="Centro Ibero Meneses">
+    </div>
+
+    <h1>Bienvenido de nuevo</h1>
+    <p class="subtitle">Ingresa tus datos para continuar</p>
+
+    <form onsubmit="return false;">
+      <div class="field">
+        <label for="usuario">Usuario</label>
+        <div class="input-shell">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <input id="usuario" type="text" placeholder="Usuario">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <div class="input-shell">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="10.5" width="16" height="10" rx="2.5"/>
+            <path d="M7.5 10.5V7a4.5 4.5 0 0 1 9 0v3.5"/>
+          </svg>
+          <input id="password" type="password" placeholder="Contraseña">
+          <button type="button" class="toggle-pass" onclick="togglePassword()" aria-label="Mostrar contraseña">
+            <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="remember-row">
+        <input type="checkbox" id="recordar">
+        <label for="recordar">Mantener sesión iniciada</label>
+      </div>
+
+      <button type="submit" class="btn-login">Ingresar</button>
+    </form>
+
+    <p class="foot-note">Centro Ibero Meneses</p>
+  </div>
+
+<script>
+  let visible = false;
+  function togglePassword() {
+    visible = !visible;
+    const input = document.getElementById('password');
+    const icon = document.getElementById('eye-icon');
+    input.type = visible ? 'text' : 'password';
+    icon.innerHTML = visible
+      ? '<path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.5 5.3A9.8 9.8 0 0 1 12 5c6.5 0 10 7 10 7a15.6 15.6 0 0 1-3.4 4.4M6.6 6.6C4 8.3 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 4-.8"/>'
+      : '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>';
+  }
+</script>
+
+</body>
+</html>

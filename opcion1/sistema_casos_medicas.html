@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consultas médicas · Centro Ibero Meneses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-main: 'Inter', -apple-system, sans-serif; /* <- cambia la tipografía aquí */
+
+    --ink: #111111;
+    --graphite: #3d3d3d;
+    --steel: #8a8b8b;
+    --mist: #d8d9d9;
+    --mist-soft: #eceded;
+    --pearl: #f5f5f4;
+    --white: #ffffff;
+
+    --radius-lg: 24px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--font-main);
+    background: var(--pearl);
+    color: var(--ink);
+    display: flex;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    width: 264px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-right: 1.5px solid var(--mist);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px 16px;
+    overflow: hidden;
+  }
+
+  .sidebar-logo {
+    flex-shrink: 0;
+    padding: 8px 10px 28px;
+  }
+  .sidebar-logo img { height: 30px; }
+
+  .nav-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE/Edge viejos */
+  }
+  .nav-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari/Brave */
+
+  nav { display: flex; flex-direction: column; gap: 4px; padding-bottom: 8px; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    color: var(--graphite);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-main);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .nav-item:hover { background: var(--pearl); color: var(--ink); }
+
+  .nav-item svg { stroke: var(--steel); flex-shrink: 0; transition: stroke 0.15s ease; }
+  .nav-item:hover svg { stroke: var(--ink); }
+
+  .nav-item.parent-active { color: var(--ink); }
+  .nav-item.parent-active svg { stroke: var(--ink); }
+
+  .nav-item .chevron {
+    margin-left: auto;
+    transition: transform 0.2s ease;
+    stroke: var(--steel);
+  }
+  .nav-item.parent-active .chevron { transform: rotate(90deg); }
+
+  .sub-item.icon-sub {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .sub-item.icon-sub svg {
+    stroke: var(--steel);
+    flex-shrink: 0;
+    transition: stroke 0.15s ease;
+  }
+
+  .sub-item.icon-sub:hover svg,
+  .sub-item.icon-sub.active svg { stroke: var(--ink); }
+
+  .submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-left: 18px;
+    margin: 2px 0 6px;
+    border-left: 1.5px solid var(--mist);
+    margin-left: 26px;
+  }
+
+  .sub-item {
+    display: block;
+    padding: 9px 14px;
+    border-radius: var(--radius-sm);
+    color: var(--steel);
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .sub-item:hover { background: var(--pearl); color: var(--ink); }
+
+  .sub-item.active {
+    background: var(--mist-soft);
+    color: var(--ink);
+    position: relative;
+  }
+
+  .sub-item.active::before {
+    content: "";
+    position: absolute;
+    left: -19.5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 16px;
+    background: var(--ink);
+    border-radius: 3px;
+  }
+
+  .sidebar-logout {
+    flex-shrink: 0;
+    padding-top: 14px;
+    border-top: 1.5px solid var(--mist);
+  }
+
+  .sidebar-logout .nav-item:hover {
+    background: var(--mist-soft);
+  }
+  .main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .topbar {
+    height: 72px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-bottom: 1.5px solid var(--mist);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 32px;
+  }
+
+  .back-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--mist);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .back-btn:hover { background: var(--pearl); border-color: var(--steel); }
+  .back-btn svg { stroke: var(--graphite); }
+
+  .topbar-title {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex-shrink: 0;
+  }
+  .topbar-title .eyebrow {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .topbar-title .name {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .search-shell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--pearl);
+    border: 1.5px solid var(--mist);
+    border-radius: 999px;
+    padding: 0 16px;
+    height: 42px;
+    width: 100%;
+    max-width: 480px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .search-shell:focus-within { border-color: var(--ink); background: var(--white); }
+  .search-shell svg { stroke: var(--steel); flex-shrink: 0; }
+  .search-shell input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    color: var(--ink);
+    width: 100%;
+  }
+  .search-shell input::placeholder { color: #b4b5b5; }
+
+  .user-chip {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--pearl);
+    border: 1.5px solid var(--mist);
+    border-radius: 999px;
+    padding: 6px 16px 6px 6px;
+    flex-shrink: 0;
+  }
+
+  .user-chip .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .user-chip span { font-size: 13.5px; font-weight: 600; color: var(--graphite); }
+
+  .logout-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    flex-shrink: 0;
+  }
+  .logout-btn svg { stroke: var(--steel); transition: stroke 0.15s ease; }
+  .logout-btn:hover { border-color: var(--ink); background: var(--ink); }
+  .logout-btn:hover svg { stroke: var(--white); }
+
+  /* ============ CONTENT ============ */
+  .content {
+    flex: 1;
+    padding: 32px 40px 48px;
+    overflow-y: auto;
+  }
+
+  .content-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+
+  .content-header h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .content-header p {
+    font-size: 13px;
+    color: var(--steel);
+    font-weight: 500;
+    margin-top: 3px;
+  }
+
+  .btn-new {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 999px;
+    padding: 11px 20px 11px 16px;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .btn-new:hover { background: var(--graphite); }
+  .btn-new:active { transform: scale(0.97); }
+  .btn-new svg { stroke: var(--white); }
+
+  .table-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .table-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    padding: 0 14px;
+    height: 40px;
+    width: 100%;
+    max-width: 320px;
+    transition: border-color 0.15s ease;
+  }
+  .table-search:focus-within { border-color: var(--ink); }
+  .table-search svg { stroke: var(--steel); flex-shrink: 0; }
+  .table-search input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    color: var(--ink);
+    width: 100%;
+  }
+  .table-search input::placeholder { color: #b4b5b5; }
+
+  .btn-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    padding: 0 14px;
+    height: 40px;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--graphite);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn-filter:hover { border-color: var(--steel); background: var(--pearl); }
+  .btn-filter svg { stroke: var(--steel); }
+
+  .table-card {
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    text-align: left;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--steel);
+    padding: 16px 28px;
+    border-bottom: 1.5px solid var(--mist);
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  tbody tr:hover { background: var(--pearl); }
+
+  tbody tr:not(:last-child) td { border-bottom: 1px solid var(--mist-soft); }
+
+  tbody td {
+    padding: 16px 28px;
+    vertical-align: middle;
+  }
+
+  .nav-item.active {
+    background: var(--mist-soft);
+    color: var(--ink);
+  }
+  .nav-item.active svg { stroke: var(--ink); }
+
+  .star-icon {
+    display: inline-block;
+    vertical-align: -2px;
+    margin-right: 5px;
+  }
+
+  .person-name { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .person-role { font-size: 12.5px; font-weight: 500; color: var(--steel); margin-top: 2px; }
+
+  .area-tag {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--graphite);
+  }
+  .area-tag.empty { color: var(--mist); font-weight: 500; }
+</style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="assets/logo.png" alt="Centro Ibero Meneses">
+    </div>
+
+            <div class="nav-scroll">
+    <nav>
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        Áreas
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Personas
+        <svg class="chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        Proyectos
+      </button>
+
+      <button class="nav-item parent-active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
+        </svg>
+        Casos
+        <svg class="chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+
+      <div class="submenu">
+        <a href="#" class="sub-item icon-sub active">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.5-2 2-3.5 2-5a5 5 0 0 0-9-3 5 5 0 0 0-9 3c0 5.5 9 12 9 12s3-2.2 5.3-4.8"/>
+            <path d="M17 17l2 2 4-4"/>
+          </svg>
+          Consultas médicas
+        </a>
+        <a href="#" class="sub-item icon-sub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3c-1 3-4 4-4 8a4 4 0 0 0 8 0c0-4-3-5-4-8Z"/><path d="M12 13v8"/>
+          </svg>
+          Consultas nutricionales
+        </a>
+        <a href="#" class="sub-item icon-sub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 4a5 5 0 0 1 5 5c0 2-1 3-1 5h-8c0-2-1-3-1-5a5 5 0 0 1 5-5Z"/>
+            <path d="M9 18h6"/><path d="M10 21h4"/>
+          </svg>
+          Consultas psicopedagógicas
+        </a>
+        <a href="#" class="sub-item icon-sub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 13V7a2 2 0 0 1 4 0"/><path d="M12 12V6a2 2 0 0 1 4 0v7"/>
+            <path d="M16 13V8a2 2 0 0 1 4 0v6a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.5L4 17"/>
+          </svg>
+          Acompañamiento psicosocial
+        </a>
+        <a href="#" class="sub-item icon-sub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v18"/><path d="M5 7l-3 6a3 3 0 0 0 6 0Z"/><path d="M19 7l-3 6a3 3 0 0 0 6 0Z"/>
+            <path d="M5 7h14"/><path d="M8 21h8"/>
+          </svg>
+          Asesoría jurídica
+        </a>
+      </div>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a4 4 0 1 1-5.4 5.4L2 19v3h3l7.3-7.3"/>
+          <path d="M17.5 3.5 20.5 6.5"/><path d="M15 9l5-5"/>
+        </svg>
+        Talleres
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>
+        </svg>
+        Colonias
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-7h6v7"/><path d="M4 12h16"/>
+        </svg>
+        Espacios históricos
+      </button>
+    </nav>
+    </div>
+
+      <div class="sidebar-logout">
+        <button class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>
+          </svg>
+          Cerrar sesión
+        </button>
+      </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <button class="back-btn" title="Ir al menú principal">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5 12 2l9 7.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-6h-2v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/>
+        </svg>
+      </button>
+
+      <div class="search-shell">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" placeholder="Buscar personas, proyectos, talleres…">
+      </div>
+
+      <div class="user-chip">
+        <div class="avatar">LG</div>
+        <span>Leo González</span>
+      </div>
+    </header>
+
+        <main class="content">
+      <div class="content-header">
+        <div>
+          <h1>Consultas médicas</h1>
+          <p>Casos de atención médica dados de alta en el centro</p>
+        </div>
+
+        <button class="btn-new">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"/><path d="M5 12h14"/>
+          </svg>
+          Nuevo registro
+        </button>
+      </div>
+
+      <div class="table-toolbar">
+        <div class="table-search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="text" placeholder="Buscar por paciente…">
+        </div>
+
+        <button class="btn-filter">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/>
+          </svg>
+          Filtro
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Última actualización</th>
+              <th>Motivo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="person-name">Rosa Elena Camposeco Vidal</div>
+                <div class="person-role">Activo</div>
+              </td>
+              <td><span class="area-tag">22 jul 2026</span></td>
+              <td><span class="area-tag">Diabetes, Control prenatal</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="person-name">Manuel Ortiz Beltrán</div>
+                <div class="person-role">Cerrado</div>
+              </td>
+              <td><span class="area-tag">10 jun 2026</span></td>
+              <td><span class="area-tag">Hipertensión</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="person-name">Guadalupe Salcido Nájera</div>
+                <div class="person-role">Activo</div>
+              </td>
+              <td><span class="area-tag">5 jul 2026</span></td>
+              <td><span class="area-tag">Chequeo general, Vacunación, ...</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="person-name">Fernando Castellanos Uc</div>
+                <div class="person-role">Activo</div>
+              </td>
+              <td><span class="area-tag">28 jun 2026</span></td>
+              <td><span class="area-tag">Dolor lumbar, Seguimiento nutricional</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
