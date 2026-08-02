@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>María Torres Salinas · Centro Ibero Meneses</title>
+<style>
+  :root {
+    --font-main: "Segoe UI", Tahoma, Geneva, Verdana, Arial, sans-serif;
+
+    --navy: #1F4E78;
+    --navy-dark: #163A58;
+    --navy-darker: #0F2A40;
+    --navy-tint: #E7EDF3;
+
+    --ink: #1a1a1a;
+    --graphite: #3d3d3d;
+    --text-secondary: #4a4a4a;
+    --steel: #6b7580;
+    --border: #9AA5B1;
+    --border-strong: #6b7580;
+    --bg: #E8EBEE;
+    --white: #ffffff;
+
+    --danger: #A0332B;
+    --danger-tint: #F5E6E5;
+
+    --radius: 2px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--font-main);
+    background: var(--bg);
+    color: var(--ink);
+    display: flex;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    width: 264px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-right: 1px solid var(--border-strong);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    transition: margin-left 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  /* ============ SIDEBAR TOGGLE (desktop: colapsa; móvil: overlay) ============ */
+  .sidebar-backdrop {
+    display: none;
+  }
+
+  @media (min-width: 901px) {
+    body.sidebar-toggled .sidebar {
+      margin-left: -264px;
+      border-right-color: transparent;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      transform: translateX(-100%);
+      z-index: 110;
+      box-shadow: none;
+    }
+
+    body.sidebar-toggled .sidebar {
+      transform: translateX(0);
+      box-shadow: 4px 0 18px rgba(0,0,0,0.25);
+    }
+
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15,42,64,0.45);
+      z-index: 105;
+    }
+
+    body.sidebar-toggled .sidebar-backdrop {
+      display: block;
+    }
+  }
+
+  .sidebar-logo {
+    flex-shrink: 0;
+    background: var(--navy);
+    border-bottom: 3px solid var(--navy-darker);
+    padding: 16px 18px;
+  }
+  .sidebar-logo img {
+    height: 26px;
+    filter: brightness(0) invert(1);
+  }
+
+  .nav-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 14px 12px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .nav-scroll::-webkit-scrollbar { display: none; }
+
+  nav { display: flex; flex-direction: column; gap: 2px; padding-bottom: 8px; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-main);
+    transition: background 0.1s ease, color 0.1s ease, border-color 0.1s ease;
+  }
+
+  .nav-item:hover { background: var(--navy-tint); color: var(--navy); border-color: var(--border); }
+
+  .nav-item svg { stroke: var(--steel); flex-shrink: 0; transition: stroke 0.1s ease; }
+  .nav-item:hover svg { stroke: var(--navy); }
+
+  .nav-item.parent-active {
+    color: var(--navy);
+    background: var(--navy-tint);
+    border-color: var(--border);
+  }
+  .nav-item.parent-active svg { stroke: var(--navy); }
+
+  .nav-item .chevron {
+    margin-left: auto;
+    transition: transform 0.15s ease;
+    stroke: var(--steel);
+  }
+  .nav-item.parent-active .chevron { transform: rotate(90deg); }
+
+  .sub-item.icon-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sub-item.icon-sub svg {
+    stroke: var(--steel);
+    flex-shrink: 0;
+    transition: stroke 0.1s ease;
+  }
+
+  .sub-item.icon-sub:hover svg,
+  .sub-item.icon-sub.active svg { stroke: var(--navy); }
+
+  .submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding-left: 15px;
+    margin: 2px 0 6px;
+    border-left: 2px solid var(--border);
+    margin-left: 24px;
+  }
+
+  .sub-item {
+    display: block;
+    padding: 7px 12px;
+    border-radius: var(--radius);
+    color: var(--steel);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.1s ease, color 0.1s ease;
+  }
+
+  .sub-item:hover { background: var(--navy-tint); color: var(--navy); }
+
+  .sub-item.active {
+    background: var(--navy);
+    color: var(--white);
+    position: relative;
+  }
+
+  .sub-item.active::before {
+    content: "";
+    position: absolute;
+    left: -17px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 14px;
+    background: var(--navy);
+  }
+
+  .sidebar-logout {
+    flex-shrink: 0;
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    background: #F2F4F6;
+  }
+
+  .sidebar-logout .nav-item {
+    color: var(--text-secondary);
+  }
+  .sidebar-logout .nav-item:hover {
+    background: var(--navy);
+    color: var(--white);
+    border-color: var(--navy-darker);
+  }
+  .sidebar-logout .nav-item:hover svg { stroke: var(--white); }
+
+  .main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .topbar {
+    height: 60px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 24px;
+  }
+
+  .back-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.1s ease, background 0.1s ease;
+  }
+  .back-btn:hover { background: var(--navy-tint); border-color: var(--navy); }
+  .back-btn svg { stroke: var(--graphite); }
+
+  .sidebar-toggle-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.1s ease, background 0.1s ease;
+  }
+  .sidebar-toggle-btn:hover { background: var(--navy-tint); border-color: var(--navy); }
+  .sidebar-toggle-btn svg { stroke: var(--graphite); }
+
+  .search-shell {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0 12px;
+    height: 36px;
+    width: 100%;
+    max-width: 440px;
+    transition: border-color 0.1s ease;
+  }
+  .search-shell:focus-within { border-color: var(--navy); outline: 1px solid var(--navy); outline-offset: -2px; }
+  .search-shell svg { stroke: var(--steel); flex-shrink: 0; }
+  .search-shell input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-main);
+    font-size: 13px;
+    color: var(--ink);
+    width: 100%;
+  }
+  .search-shell input::placeholder { color: #9a9a9a; }
+
+  .user-chip {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--navy-tint);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 5px 14px 5px 5px;
+    flex-shrink: 0;
+  }
+
+  .user-chip .avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius);
+    background: var(--navy);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .user-chip span { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+
+  /* ============ CONTENT ============ */
+  .content {
+    flex: 1;
+    padding: 24px 28px 40px;
+    overflow-y: auto;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+  .breadcrumb a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.1s ease;
+  }
+  .breadcrumb a:hover { color: var(--navy); }
+  .breadcrumb .current { color: var(--ink); }
+  .breadcrumb svg { stroke: var(--border); flex-shrink: 0; }
+
+  .breadcrumb-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: var(--radius);
+    background: var(--white);
+    border: 1px solid var(--border);
+    margin-right: 2px;
+  }
+  .breadcrumb-back svg { stroke: var(--graphite); }
+  .breadcrumb-back:hover { background: var(--navy-tint); border-color: var(--navy); }
+
+  .content-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .content-header h1 {
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .content-header p {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .btn-outline {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--white);
+    color: var(--ink);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 8px 15px;
+    font-family: var(--font-main);
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.1s ease, background 0.1s ease, color 0.1s ease;
+  }
+  .btn-outline:hover { border-color: var(--navy); background: var(--navy-tint); color: var(--navy); }
+  .btn-outline svg { stroke: var(--graphite); }
+  .btn-outline:hover svg { stroke: var(--navy); }
+
+  .btn-danger {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--white);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+    border-radius: var(--radius);
+    padding: 8px 15px;
+    font-family: var(--font-main);
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.1s ease, color 0.1s ease;
+  }
+  .btn-danger svg { stroke: var(--danger); transition: stroke 0.1s ease; }
+  .btn-danger:hover {
+    background: var(--danger);
+    color: var(--white);
+  }
+  .btn-danger:hover svg { stroke: var(--white); }
+
+  /* --- Layout de expediente: tarjeta principal + panel lateral --- */
+  .record-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .record-main {
+    flex: 1;
+    min-width: 0;
+    background: var(--white);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+  }
+
+  .record-header {
+    background: var(--navy);
+    border-bottom: 2px solid var(--navy-darker);
+    padding: 12px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .record-header .title {
+    color: var(--white);
+    font-size: 14.5px;
+    font-weight: 700;
+  }
+
+  .record-header .actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .record-header .actions a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #cfdce6;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: color 0.1s ease;
+  }
+  .record-header .actions a:hover { color: var(--white); }
+  .record-header .actions a svg { stroke: currentColor; }
+  .record-header .actions a.danger { color: #f3c9c5; }
+  .record-header .actions a.danger:hover { color: #ffffff; }
+
+  .record-body {
+    padding: 22px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 32px;
+  }
+
+  .detail-row {
+    display: flex;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .detail-row .label {
+    font-weight: 700;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+
+  .detail-row .value { color: var(--graphite); }
+  .detail-row .value.empty { color: #a3a9ae; font-style: italic; }
+
+  .record-subsection {
+    border-top: 1px solid var(--border);
+  }
+
+  .record-subsection .sub-header {
+    background: var(--ink);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 8px 22px;
+  }
+
+  .sub-list { display: flex; flex-direction: column; }
+
+  .sub-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 22px;
+    font-size: 13px;
+  }
+  .sub-row:not(:last-child) { border-bottom: 1px solid #eef0f2; }
+  .sub-row:nth-child(even) { background: #F7F8F9; }
+
+  .sub-row .name { font-weight: 600; color: var(--ink); }
+
+  .role-badge {
+    flex-shrink: 0;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 3px 9px;
+    border-radius: var(--radius);
+    text-transform: uppercase;
+  }
+  .role-badge.lider { background: var(--navy); color: var(--white); }
+  .role-badge.participante { background: var(--bg); color: var(--text-secondary); border: 1px solid var(--border); }
+
+  /* --- Panel lateral: foto + navegación de secciones --- */
+  .side-panel {
+    width: 240px;
+    flex-shrink: 0;
+    background: #F2F4F6;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .side-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: var(--navy);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 700;
+  }
+
+  .side-identity {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+  }
+
+  .side-identity .name {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+
+  .side-identity .role {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .side-identity .meta-line {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .section-nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .section-nav a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 11px 16px;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #E7EDF3;
+    background: var(--navy-dark);
+    border-bottom: 1px solid var(--navy-darker);
+    transition: background 0.1s ease;
+  }
+  .section-nav a:hover { background: var(--navy-darker); }
+
+  .section-nav a.active {
+    background: var(--white);
+    color: var(--navy);
+    border-left: 4px solid var(--navy);
+    padding-left: 12px;
+  }
+
+  .section-nav .count {
+    flex-shrink: 0;
+    min-width: 20px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: var(--radius);
+    background: #C97A2B;
+    color: var(--white);
+  }
+  .section-nav .count.zero { background: var(--border-strong); }
+  .section-nav a.active .count { background: var(--navy); color: var(--white); }
+
+  @media (max-width: 780px) {
+    .record-layout { flex-direction: column; }
+    .side-panel { width: 100%; }
+    .record-body { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 720px) {
+    .related-grid { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="assets/logo.png" alt="Centro Ibero Meneses">
+    </div>
+
+    <div class="nav-scroll">
+    <nav>
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        Áreas
+      </button>
+
+      <button class="nav-item parent-active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Personas
+        <svg class="chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+
+      <div class="submenu">
+        <a href="sistema_centro.html" class="sub-item active">Centro</a>
+        <a href="sistema_externas.html" class="sub-item">Externas</a>
+        <a href="#" class="sub-item">Comunidad</a>
+      </div>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        Proyectos
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
+        </svg>
+        Casos
+        <svg class="chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+
+      <div class="submenu">
+        <a href="#" class="sub-item icon-sub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 14c1.5-2 2-3.5 2-5a5 5 0 0 0-9-3 5 5 0 0 0-9 3c0 5.5 9 12 9 12s3-2.2 5.3-4.8"/>
+            <path d="M17 17l2 2 4-4"/>
+          </svg>
+          Consultas médicas
+        </a>
+        <a href="#" class="sub-item icon-sub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3c-1 3-4 4-4 8a4 4 0 0 0 8 0c0-4-3-5-4-8Z"/><path d="M12 13v8"/>
+          </svg>
+          Consultas nutricionales
+        </a>
+        <a href="#" class="sub-item icon-sub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 4a5 5 0 0 1 5 5c0 2-1 3-1 5h-8c0-2-1-3-1-5a5 5 0 0 1 5-5Z"/>
+            <path d="M9 18h6"/><path d="M10 21h4"/>
+          </svg>
+          Consultas psicopedagógicas
+        </a>
+        <a href="#" class="sub-item icon-sub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 13V7a2 2 0 0 1 4 0"/><path d="M12 12V6a2 2 0 0 1 4 0v7"/>
+            <path d="M16 13V8a2 2 0 0 1 4 0v6a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.5L4 17"/>
+          </svg>
+          Acompañamiento psicosocial
+        </a>
+        <a href="#" class="sub-item icon-sub">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v18"/><path d="M5 7l-3 6a3 3 0 0 0 6 0Z"/><path d="M19 7l-3 6a3 3 0 0 0 6 0Z"/>
+            <path d="M5 7h14"/><path d="M8 21h8"/>
+          </svg>
+          Asesoría jurídica
+        </a>
+      </div>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a4 4 0 1 1-5.4 5.4L2 19v3h3l7.3-7.3"/>
+          <path d="M17.5 3.5 20.5 6.5"/><path d="M15 9l5-5"/>
+        </svg>
+        Talleres
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>
+        </svg>
+        Colonias
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-7h6v7"/><path d="M4 12h16"/>
+        </svg>
+        Espacios históricos
+      </button>
+    </nav>
+    </div>
+
+      <div class="sidebar-logout">
+        <button class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>
+          </svg>
+          Cerrar sesión
+        </button>
+      </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <button class="back-btn" title="Ir al menú principal">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5 12 2l9 7.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-6h-2v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/>
+        </svg>
+      </button>
+
+      <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Mostrar u ocultar menú">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2.5"/>
+          <path d="M9.5 4v16"/>
+        </svg>
+      </button>
+
+      <div class="search-shell">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" placeholder="Buscar personas, proyectos, talleres…">
+      </div>
+
+      <div class="user-chip">
+        <div class="avatar">LG</div>
+        <span>Leo González</span>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="breadcrumb">
+        <a href="sistema_centro.html" class="breadcrumb-back" title="Volver a Personas del Centro">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/>
+          </svg>
+        </a>
+        <a href="sistema_centro.html">Personas del Centro</a>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+        <span class="current">María Torres Salinas</span>
+      </div>
+
+      <div class="record-layout">
+        <div class="record-main">
+          <div class="record-header">
+            <span class="title">Ficha de persona para María Torres Salinas</span>
+            <div class="actions">
+              <a>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+                </svg>
+                Editar ficha
+              </a>
+              <a class="danger">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                  <path d="M10 11v6"/><path d="M14 11v6"/>
+                </svg>
+                Borrar
+              </a>
+            </div>
+          </div>
+
+          <div class="record-body">
+            <div class="detail-row"><span class="label">Nombre:</span><span class="value">María</span></div>
+            <div class="detail-row"><span class="label">Cargo:</span><span class="value">Coordinadora</span></div>
+            <div class="detail-row"><span class="label">Apellido paterno:</span><span class="value">Torres</span></div>
+            <div class="detail-row"><span class="label">Área a cargo:</span><span class="value">Nutrición Comunitaria</span></div>
+            <div class="detail-row"><span class="label">Apellido materno:</span><span class="value">Salinas</span></div>
+            <div class="detail-row"><span class="label">Teléfono:</span><span class="value empty">— aún no capturado</span></div>
+          </div>
+
+          <div class="record-subsection" id="proyectos">
+            <div class="sub-header">Proyectos</div>
+            <div class="sub-list">
+              <div class="sub-row">
+                <span class="name">Huertos Comunitarios</span>
+                <span class="role-badge lider">Líder</span>
+              </div>
+              <div class="sub-row">
+                <span class="name">Salud Preventiva en Colonias</span>
+                <span class="role-badge participante">Participante</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="record-subsection" id="casos">
+            <div class="sub-header">Casos</div>
+            <div class="sub-list">
+              <div class="sub-row">
+                <span class="name">Da consultas nutricionales</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="record-subsection" id="talleres">
+            <div class="sub-header">Talleres</div>
+            <div class="sub-list">
+              <div class="sub-row">
+                <span class="name">Alimentación Saludable</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="side-panel">
+          <div class="side-photo">MT</div>
+          <div class="side-identity">
+            <div class="name">María Torres Salinas</div>
+            <div class="role">Coordinadora</div>
+            <div class="meta-line">Nutrición Comunitaria</div>
+            <div class="meta-line">Personal del Centro</div>
+          </div>
+          <nav class="section-nav">
+            <a href="#" class="active">Información general</a>
+            <a href="#proyectos">Proyectos <span class="count">2</span></a>
+            <a href="#casos">Casos <span class="count">1</span></a>
+            <a href="#talleres">Talleres <span class="count">1</span></a>
+          </nav>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <script>
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    const MOBILE_BREAKPOINT = 900;
+
+    function toggleSidebar() {
+      document.body.classList.toggle('sidebar-toggled');
+    }
+
+    function closeSidebar() {
+      document.body.classList.remove('sidebar-toggled');
+    }
+
+    sidebarToggleBtn.addEventListener('click', toggleSidebar);
+    sidebarBackdrop.addEventListener('click', closeSidebar);
+
+    // Al cruzar el breakpoint, se resetea el estado para evitar confusiones
+    // (p.ej. que quede "colapsada" en desktop y luego aparezca oculta en móvil, o viceversa)
+    let wasMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+    window.addEventListener('resize', () => {
+      const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+      if (isMobile !== wasMobile) {
+        closeSidebar();
+        wasMobile = isMobile;
+      }
+    });
+  </script>
+
+</body>
+</html>
