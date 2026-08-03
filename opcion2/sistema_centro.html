@@ -96,9 +96,20 @@
 
   .sidebar-logo {
     flex-shrink: 0;
-    padding: 8px 10px 28px;
+    padding: 8px 10px 22px;
+    position: relative;
   }
   .sidebar-logo img { height: 30px; }
+  .sidebar-logo::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    bottom: 0;
+    width: 32px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 3px;
+  }
 
   .nav-scroll {
     flex: 1;
@@ -183,22 +194,13 @@
   .sub-item:hover { background: var(--pearl); color: var(--ink); }
 
   .sub-item.active {
-    background: var(--accent-soft);
-    color: var(--accent);
-    position: relative;
+    background: var(--accent);
+    color: var(--white);
+    font-weight: 700;
+    box-shadow: 0 6px 16px rgba(224,0,52,0.28);
   }
 
-  .sub-item.active::before {
-    content: "";
-    position: absolute;
-    left: -19.5px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 16px;
-    background: var(--accent);
-    border-radius: 3px;
-  }
+  .sub-item.icon-sub.active svg { stroke: var(--white) !important; }
 
   .sidebar-logout {
     flex-shrink: 0;
@@ -390,7 +392,8 @@
     font-weight: 600;
     cursor: pointer;
     flex-shrink: 0;
-    transition: background 0.15s ease, transform 0.1s ease;
+    transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    box-shadow: 0 8px 20px rgba(224,0,52,0.24);
   }
   .btn-new:hover { background: var(--accent-dark); }
   .btn-new:active { transform: scale(0.97); }
