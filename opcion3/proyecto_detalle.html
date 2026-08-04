@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>María Torres Salinas · Centro Ibero Meneses</title>
+<title>Huertos Comunitarios · Centro Ibero Meneses</title>
 <style>
   :root {
     --font-main: "Segoe UI", Tahoma, Geneva, Verdana, Arial, sans-serif;
@@ -141,12 +141,14 @@
   .nav-item svg { stroke: var(--steel); flex-shrink: 0; transition: stroke 0.1s ease; }
   .nav-item:hover svg { stroke: var(--navy); }
 
-  .nav-item.parent-active {
+  .nav-item.parent-active,
+  .nav-item.active {
     color: var(--navy);
     background: var(--navy-tint);
     border-color: var(--border);
   }
-  .nav-item.parent-active svg { stroke: var(--navy); }
+  .nav-item.parent-active svg,
+  .nav-item.active svg { stroke: var(--navy); }
 
   .nav-item .chevron {
     margin-left: auto;
@@ -533,7 +535,31 @@
     font-weight: 700;
     letter-spacing: 0.03em;
     padding: 8px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
   }
+
+  .btn-sub {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    color: var(--white);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: var(--radius);
+    padding: 4px 10px;
+    font-family: var(--font-main);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.1s ease, border-color 0.1s ease;
+  }
+  .btn-sub:hover { background: rgba(255,255,255,0.12); border-color: var(--white); }
+  .btn-sub svg { stroke: var(--white); flex-shrink: 0; }
 
   .sub-list { display: flex; flex-direction: column; }
 
@@ -615,6 +641,126 @@
     margin-top: 4px;
   }
 
+  .record-body.doc-body {
+    display: block;
+    padding: 0;
+  }
+
+  .doc-section {
+    padding: 18px 22px;
+  }
+  .doc-section:not(:last-child) { border-bottom: 1px solid var(--border); }
+
+  .doc-section h4 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 7px;
+  }
+
+  .doc-section p {
+    font-size: 13px;
+    color: var(--graphite);
+    line-height: 1.6;
+  }
+  .doc-section p.empty { color: #a3a9ae; font-style: italic; }
+
+  .timeline-row {
+    display: flex;
+    gap: 16px;
+    padding: 11px 22px;
+    font-size: 13px;
+  }
+  .timeline-row:not(:last-child) { border-bottom: 1px solid #eef0f2; }
+  .timeline-row:nth-child(even) { background: #F7F8F9; }
+
+  .timeline-row .t-date {
+    flex-shrink: 0;
+    width: 130px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .timeline-row .t-text { color: var(--graphite); }
+
+  /* --- Panel lateral: metadatos del proyecto --- */
+  .side-meta {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .side-meta .meta-row:not(:last-child) {
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .side-meta label {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 4px;
+  }
+
+  .side-meta .value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    padding: 3px 10px;
+    border-radius: var(--radius);
+    background: #2E6B45;
+    color: var(--white);
+  }
+
+  .side-meta .simple-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: var(--radius);
+    background: var(--navy-tint);
+    color: var(--navy);
+    border: 1px solid var(--border);
+  }
+
+  .featured-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .featured-row svg { flex-shrink: 0; }
+
+  .repo-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .repo-link:hover { text-decoration: underline; }
+  .repo-link svg { stroke: var(--navy); flex-shrink: 0; }
+
   @media (max-width: 780px) {
     .record-layout { flex-direction: column; }
     .side-panel { width: 100%; }
@@ -644,7 +790,7 @@
         Áreas
       </button>
 
-      <button class="nav-item parent-active">
+      <button class="nav-item">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
           <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
@@ -655,13 +801,7 @@
         </svg>
       </button>
 
-      <div class="submenu">
-        <a href="sistema_centro.html" class="sub-item active">Centro</a>
-        <a href="sistema_externas.html" class="sub-item">Externas</a>
-        <a href="#" class="sub-item">Comunidad</a>
-      </div>
-
-      <button class="nav-item">
+      <button class="nav-item active">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
         </svg>
@@ -677,43 +817,6 @@
           <path d="M9 6l6 6-6 6"/>
         </svg>
       </button>
-
-      <div class="submenu">
-        <a href="#" class="sub-item icon-sub">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 14c1.5-2 2-3.5 2-5a5 5 0 0 0-9-3 5 5 0 0 0-9 3c0 5.5 9 12 9 12s3-2.2 5.3-4.8"/>
-            <path d="M17 17l2 2 4-4"/>
-          </svg>
-          Consultas médicas
-        </a>
-        <a href="#" class="sub-item icon-sub">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3c-1 3-4 4-4 8a4 4 0 0 0 8 0c0-4-3-5-4-8Z"/><path d="M12 13v8"/>
-          </svg>
-          Consultas nutricionales
-        </a>
-        <a href="#" class="sub-item icon-sub">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 4a5 5 0 0 1 5 5c0 2-1 3-1 5h-8c0-2-1-3-1-5a5 5 0 0 1 5-5Z"/>
-            <path d="M9 18h6"/><path d="M10 21h4"/>
-          </svg>
-          Consultas psicopedagógicas
-        </a>
-        <a href="#" class="sub-item icon-sub">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 13V7a2 2 0 0 1 4 0"/><path d="M12 12V6a2 2 0 0 1 4 0v7"/>
-            <path d="M16 13V8a2 2 0 0 1 4 0v6a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.5L4 17"/>
-          </svg>
-          Acompañamiento psicosocial
-        </a>
-        <a href="#" class="sub-item icon-sub">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3v18"/><path d="M5 7l-3 6a3 3 0 0 0 6 0Z"/><path d="M19 7l-3 6a3 3 0 0 0 6 0Z"/>
-            <path d="M5 7h14"/><path d="M8 21h8"/>
-          </svg>
-          Asesoría jurídica
-        </a>
-      </div>
 
       <button class="nav-item">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -779,22 +882,22 @@
 
     <main class="content">
       <div class="breadcrumb">
-        <a href="sistema_centro.html" class="breadcrumb-back" title="Volver a Personas del Centro">
+        <a href="sistema_proyectos.html" class="breadcrumb-back" title="Volver a Proyectos">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/>
           </svg>
         </a>
-        <a href="sistema_centro.html">Personas del Centro</a>
+        <a href="sistema_proyectos.html">Proyectos</a>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 6l6 6-6 6"/>
         </svg>
-        <span class="current">María Torres Salinas</span>
+        <span class="current">Huertos Comunitarios</span>
       </div>
 
       <div class="record-layout">
         <div class="record-main">
           <div class="record-header">
-            <span class="title">Ficha de información</span>
+            <span class="title">Ficha de proyecto para Huertos Comunitarios</span>
             <div class="actions">
               <a>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -813,43 +916,73 @@
             </div>
           </div>
 
-          <div class="record-body">
-            <div class="detail-row"><span class="label">Nombre:</span><span class="value">María</span></div>
-            <div class="detail-row"><span class="label">Cargo:</span><span class="value">Coordinadora</span></div>
-            <div class="detail-row"><span class="label">Apellido paterno:</span><span class="value">Torres</span></div>
-            <div class="detail-row"><span class="label">Área a cargo:</span><span class="value">Nutrición Comunitaria</span></div>
-            <div class="detail-row"><span class="label">Apellido materno:</span><span class="value">Salinas</span></div>
-            <div class="detail-row"><span class="label">Teléfono:</span><span class="value empty">— aún no capturado</span></div>
+          <div class="record-body doc-body">
+            <div class="doc-section">
+              <h4>Antecedentes</h4>
+              <p>Varias colonias del Pueblo Santa Fe reportaron falta de acceso a alimentos frescos y espacios verdes comunitarios durante los diagnósticos realizados por el centro en 2024.</p>
+            </div>
+            <div class="doc-section">
+              <h4>Objetivos</h4>
+              <p>Habilitar huertos comunitarios en al menos dos colonias, capacitar a familias en producción de alimentos a pequeña escala, y fomentar el uso de espacios públicos para actividades colectivas.</p>
+            </div>
+            <div class="doc-section">
+              <h4>Alcance</h4>
+              <p>El proyecto cubre inicialmente las colonias Loma Bonita y Vista Hermosa, con posibilidad de extenderse a colonias vecinas conforme se consolide el primer huerto piloto.</p>
+            </div>
+            <div class="doc-section">
+              <h4>Evaluación</h4>
+              <p class="empty">— aún sin evaluación registrada, el proyecto sigue en curso</p>
+            </div>
           </div>
 
-          <div class="record-subsection" id="proyectos">
-            <div class="sub-header">Proyectos</div>
+          <div class="record-subsection">
+            <div class="sub-header">
+              <span>Participantes</span>
+              <button class="btn-sub">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14"/><path d="M5 12h14"/>
+                </svg>
+                Agregar participante
+              </button>
+            </div>
             <div class="sub-list">
               <div class="sub-row">
-                <span class="name">Huertos Comunitarios</span>
+                <span class="name">María Torres Salinas</span>
                 <span class="role-badge lider">Líder</span>
               </div>
               <div class="sub-row">
-                <span class="name">Salud Preventiva en Colonias</span>
+                <span class="name">Sofía Ramírez Duarte</span>
+                <span class="role-badge participante">Participante</span>
+              </div>
+              <div class="sub-row">
+                <span class="name">Diego Martínez Cobos</span>
                 <span class="role-badge participante">Participante</span>
               </div>
             </div>
           </div>
 
-          <div class="record-subsection" id="casos">
-            <div class="sub-header">Casos</div>
-            <div class="sub-list">
-              <div class="sub-row">
-                <span class="name">Da consultas nutricionales</span>
-              </div>
+          <div class="record-subsection">
+            <div class="sub-header">
+              <span>Historial</span>
+              <button class="btn-sub">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14"/><path d="M5 12h14"/>
+                </svg>
+                Nuevo reporte
+              </button>
             </div>
-          </div>
-
-          <div class="record-subsection" id="talleres">
-            <div class="sub-header">Talleres</div>
             <div class="sub-list">
-              <div class="sub-row">
-                <span class="name">Alimentación Saludable</span>
+              <div class="timeline-row">
+                <span class="t-date">20 de julio, 2026</span>
+                <span class="t-text">Se sembraron los primeros almácigos de jitomate y calabaza en el terreno de la colonia Loma Bonita.</span>
+              </div>
+              <div class="timeline-row">
+                <span class="t-date">2 de junio, 2026</span>
+                <span class="t-text">Reunión con vecinos de Loma Bonita para definir el terreno disponible y acordar horarios de riego compartido.</span>
+              </div>
+              <div class="timeline-row">
+                <span class="t-date">15 de marzo, 2025</span>
+                <span class="t-text">Arranque oficial del proyecto con recorrido por las colonias participantes.</span>
               </div>
             </div>
           </div>
@@ -857,10 +990,58 @@
 
         <aside class="side-panel">
           <div class="side-identity">
-            <div class="name">María Torres Salinas</div>
-            <div class="role">Coordinadora</div>
-            <div class="meta-line">Nutrición Comunitaria</div>
-            <div class="meta-line">Personal del Centro</div>
+            <div class="name">Huertos Comunitarios</div>
+            <div class="role">Proyecto</div>
+          </div>
+          <div class="side-meta">
+            <div class="meta-row">
+              <label>Fecha de inicio</label>
+              <div class="value">15 de marzo, 2025</div>
+            </div>
+            <div class="meta-row">
+              <label>Fecha de fin</label>
+              <div class="value">En curso</div>
+            </div>
+            <div class="meta-row">
+              <label>Estado</label>
+              <span class="status-badge">Activo</span>
+            </div>
+            <div class="meta-row">
+              <label>Líder</label>
+              <div class="value">María Torres Salinas</div>
+            </div>
+            <div class="meta-row">
+              <label>Colonias</label>
+              <div class="simple-tag-list">
+                <span class="tag">Colonia 1</span>
+                <span class="tag">Colonia 2</span>
+              </div>
+            </div>
+            <div class="meta-row">
+              <label>Áreas</label>
+              <div class="simple-tag-list">
+                <span class="tag">Nutrición Comunitaria</span>
+              </div>
+            </div>
+            <div class="meta-row">
+              <label>Destacado</label>
+              <div class="featured-row">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#1F4E78" stroke="#1F4E78" stroke-width="1.5" stroke-linejoin="round">
+                  <path d="M12 2.5l2.9 6.3 6.8.7-5.1 4.6 1.5 6.7L12 17.6l-6.1 3.2 1.5-6.7-5.1-4.6 6.8-.7Z"/>
+                </svg>
+                <span class="value">Sí</span>
+              </div>
+            </div>
+            <div class="meta-row">
+              <label>Repositorio</label>
+              <a href="#" class="repo-link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/>
+                  <path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/>
+                </svg>
+                Ver repositorio
+              </a>
+            </div>
           </div>
         </aside>
       </div>

@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huertos Comunitarios · Centro Ibero Meneses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-main: 'Poppins', -apple-system, sans-serif; /* <- cambia la tipografía aquí */
+
+    --ink: #17130f;
+    --accent: #E00034;
+    --accent-dark: #A8002A;
+    --accent-soft: #fce6ea;
+    --graphite: #4a453f;
+    --steel: #82786f;
+    --mist: #ded9d3;
+    --mist-soft: #f1efec;
+    --pearl: #faf9f7;
+    --white: #ffffff;
+
+    --radius-lg: 24px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--font-main);
+    background: var(--pearl);
+    color: var(--ink);
+    display: flex;
+  }
+
+  /* ============ SIDEBAR ============ */
+  .sidebar {
+    width: 264px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-right: 1.5px solid var(--mist);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px 16px;
+    overflow: hidden;
+    transition: margin-left 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  /* ============ SIDEBAR TOGGLE (desktop: colapsa; móvil: overlay) ============ */
+  .sidebar-backdrop {
+    display: none;
+  }
+
+  @media (min-width: 901px) {
+    body.sidebar-toggled .sidebar {
+      margin-left: -264px;
+      border-right-color: transparent;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      transform: translateX(-100%);
+      z-index: 110;
+      box-shadow: none;
+    }
+
+    body.sidebar-toggled .sidebar {
+      transform: translateX(0);
+      box-shadow: 8px 0 30px rgba(0,0,0,0.15);
+    }
+
+    .sidebar-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(17,17,17,0.4);
+      z-index: 105;
+    }
+
+    body.sidebar-toggled .sidebar-backdrop {
+      display: block;
+    }
+  }
+
+  .sidebar-logo {
+    flex-shrink: 0;
+    padding: 8px 10px 22px;
+    position: relative;
+  }
+  .sidebar-logo img { height: 30px; }
+  .sidebar-logo::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    bottom: 0;
+    width: 32px;
+    height: 4px;
+    background: var(--accent);
+    border-radius: 3px;
+  }
+
+  .nav-scroll {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE/Edge viejos */
+  }
+  .nav-scroll::-webkit-scrollbar { display: none; } /* Chrome/Safari/Brave */
+
+  nav { display: flex; flex-direction: column; gap: 4px; padding-bottom: 8px; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    color: var(--graphite);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-main);
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .nav-item:hover { background: var(--pearl); color: var(--ink); }
+
+  .nav-item svg { stroke: var(--steel); flex-shrink: 0; transition: stroke 0.15s ease; }
+  .nav-item:hover svg { stroke: var(--ink); }
+
+  .nav-item.parent-active { color: var(--ink); }
+  .nav-item.parent-active svg { stroke: var(--ink); }
+
+  .nav-item .chevron {
+    margin-left: auto;
+    transition: transform 0.2s ease;
+    stroke: var(--steel);
+  }
+  .nav-item.parent-active .chevron { transform: rotate(90deg); }
+
+  .sub-item.icon-sub {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .sub-item.icon-sub svg {
+    stroke: var(--steel);
+    flex-shrink: 0;
+    transition: stroke 0.15s ease;
+  }
+
+  .sub-item.icon-sub:hover svg,
+  .sub-item.icon-sub.active svg { stroke: var(--ink); }
+
+  .submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-left: 18px;
+    margin: 2px 0 6px;
+    border-left: 1.5px solid var(--mist);
+    margin-left: 26px;
+  }
+
+  .sub-item {
+    display: block;
+    padding: 9px 14px;
+    border-radius: var(--radius-sm);
+    color: var(--steel);
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .sub-item:hover { background: var(--pearl); color: var(--ink); }
+
+  .sub-item.active {
+    background: var(--accent);
+    color: var(--white);
+    font-weight: 700;
+    box-shadow: 0 6px 16px rgba(224,0,52,0.28);
+  }
+
+  .sidebar-logout {
+    flex-shrink: 0;
+    padding-top: 14px;
+    border-top: 1.5px solid var(--mist);
+  }
+
+  .sidebar-logout .nav-item:hover {
+    background: var(--mist-soft);
+  }
+  .main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .topbar {
+    height: 72px;
+    flex-shrink: 0;
+    background: var(--white);
+    border-bottom: 1.5px solid var(--mist);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0 32px;
+  }
+
+  .back-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--mist);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .back-btn:hover { background: var(--pearl); border-color: var(--steel); }
+  .back-btn svg { stroke: var(--graphite); }
+
+  .sidebar-toggle-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid var(--mist);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .sidebar-toggle-btn:hover { background: var(--pearl); border-color: var(--steel); }
+  .sidebar-toggle-btn svg { stroke: var(--graphite); }
+
+  .topbar-title {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex-shrink: 0;
+  }
+  .topbar-title .eyebrow {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--steel);
+  }
+  .topbar-title .name {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .search-shell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--pearl);
+    border: 1.5px solid var(--mist);
+    border-radius: 999px;
+    padding: 0 16px;
+    height: 42px;
+    width: 100%;
+    max-width: 480px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .search-shell:focus-within { border-color: var(--accent); background: var(--white); }
+  .search-shell svg { stroke: var(--steel); flex-shrink: 0; }
+  .search-shell input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    color: var(--ink);
+    width: 100%;
+  }
+  .search-shell input::placeholder { color: #b4b5b5; }
+
+  .user-chip {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--pearl);
+    border: 1.5px solid var(--mist);
+    border-radius: 999px;
+    padding: 6px 16px 6px 6px;
+    flex-shrink: 0;
+  }
+
+  .user-chip .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .user-chip span { font-size: 13.5px; font-weight: 600; color: var(--graphite); }
+
+  .logout-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+    flex-shrink: 0;
+  }
+  .logout-btn svg { stroke: var(--steel); transition: stroke 0.15s ease; }
+  .logout-btn:hover { border-color: var(--accent-dark); background: var(--accent-dark); }
+  .logout-btn:hover svg { stroke: var(--white); }
+
+  /* ============ CONTENT ============ */
+  .content {
+    flex: 1;
+    padding: 32px 40px 48px;
+    overflow-y: auto;
+  }
+
+  .content-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .btn-danger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    color: var(--accent);
+    border: 1.5px solid var(--accent);
+    border-radius: 999px;
+    padding: 11px 20px 11px 16px;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-danger svg { stroke: var(--accent); transition: stroke 0.15s ease; }
+  .btn-danger:hover {
+    background: var(--accent);
+    color: var(--white);
+    border-color: var(--accent);
+  }
+  .btn-danger:hover svg { stroke: var(--white); }
+
+  .content-header h1 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .content-header p {
+    font-size: 13px;
+    color: var(--steel);
+    font-weight: 500;
+    margin-top: 3px;
+  }
+
+  .btn-new {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    border-radius: 999px;
+    padding: 11px 20px 11px 16px;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    box-shadow: 0 8px 20px rgba(224,0,52,0.24);
+  }
+  .btn-new:hover { background: var(--accent-dark); }
+  .btn-new:active { transform: scale(0.97); }
+  .btn-new svg { stroke: var(--white); }
+
+  .table-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .table-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    padding: 0 14px;
+    height: 40px;
+    width: 100%;
+    max-width: 320px;
+    transition: border-color 0.15s ease;
+  }
+  .table-search:focus-within { border-color: var(--ink); }
+  .table-search svg { stroke: var(--steel); flex-shrink: 0; }
+  .table-search input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    color: var(--ink);
+    width: 100%;
+  }
+  .table-search input::placeholder { color: #b4b5b5; }
+
+  .btn-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    padding: 0 14px;
+    height: 40px;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--graphite);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn-filter:hover { border-color: var(--steel); background: var(--pearl); }
+  .btn-filter svg { stroke: var(--steel); }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--steel);
+    margin-bottom: 14px;
+  }
+  .breadcrumb a {
+    color: var(--steel);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .breadcrumb a:hover { color: var(--ink); }
+  .breadcrumb .current { color: var(--ink); }
+  .breadcrumb svg { stroke: var(--mist); flex-shrink: 0; }
+
+  .btn-outline {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    color: var(--ink);
+    border: 1.5px solid var(--mist);
+    border-radius: 999px;
+    padding: 11px 20px 11px 16px;
+    font-family: var(--font-main);
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .btn-outline:hover { border-color: var(--steel); background: var(--pearl); }
+  .btn-outline svg { stroke: var(--graphite); }
+
+  .profile-card {
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 24px;
+  }
+
+  .profile-avatar {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .profile-info h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+
+  .profile-tags {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--pearl);
+    color: var(--graphite);
+    border: 1.5px solid var(--mist);
+  }
+  .tag svg { stroke: var(--steel); }
+
+  .info-card {
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+  }
+
+  .info-card h3 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 20px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 32px;
+  }
+
+  .info-field label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 6px;
+  }
+
+  .info-field .value {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .info-field .value.empty { color: var(--mist); font-weight: 500; }
+
+  .breadcrumb-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--pearl);
+    border: 1.5px solid var(--mist);
+    margin-right: 2px;
+  }
+  .breadcrumb-back svg { stroke: var(--graphite); }
+  .breadcrumb-back:hover { background: var(--mist-soft); }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .related-card {
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+  }
+
+  .related-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .related-card h3 svg { stroke: var(--steel); flex-shrink: 0; }
+
+  .related-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .related-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 11px 4px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  .related-row:hover { background: var(--pearl); }
+  .related-row:not(:last-child) { border-bottom: 1px solid var(--mist-soft); }
+
+  .related-row .name {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+
+  .role-badge {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+  .role-badge.lider { background: var(--accent); color: var(--white); }
+  .role-badge.participante { background: var(--mist-soft); color: var(--graphite); }
+
+  .simple-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .empty-state {
+    font-size: 13px;
+    color: var(--mist);
+    font-weight: 500;
+    padding: 8px 4px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 32px 0 14px;
+  }
+  .section-header h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+
+  .btn-small {
+    padding: 9px 16px 9px 13px;
+    font-size: 13px;
+  }
+
+  .current-badge {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: var(--ink);
+    color: var(--white);
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .participations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .participation-item {
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .participation-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 22px;
+    cursor: pointer;
+    list-style: none;
+  }
+  .participation-summary::-webkit-details-marker { display: none; }
+  .participation-summary::marker { content: ""; }
+
+  .participation-summary:hover { background: var(--pearl); }
+
+  .participation-item[open] > .participation-summary {
+    border-bottom: 1.5px solid var(--mist);
+  }
+
+  .chevron-icon {
+    stroke: var(--steel);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+  .participation-item[open] .chevron-icon { transform: rotate(180deg); }
+
+  .participation-body {
+    padding: 18px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .mini-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-top: 10px;
+  }
+  .mini-label:first-child { margin-top: 0; }
+
+  .participation-text {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--graphite);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+
+  .doc-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 880px) {
+    .doc-layout { grid-template-columns: 1fr; }
+  }
+
+  .doc-card {
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-lg);
+    padding: 8px 32px;
+  }
+
+  .doc-section {
+    padding: 24px 0;
+  }
+  .doc-section:not(:last-child) {
+    border-bottom: 1.5px solid var(--mist-soft);
+  }
+
+  .doc-section h3 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 10px;
+  }
+
+  .doc-section p {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: var(--graphite);
+    line-height: 1.65;
+  }
+
+  .doc-section p.empty { color: var(--mist); font-style: normal; }
+
+  .meta-card {
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-lg);
+    padding: 26px 24px;
+    position: sticky;
+    top: 24px;
+  }
+
+  .meta-row {
+    padding: 13px 0;
+  }
+  .meta-row:not(:last-child) {
+    border-bottom: 1px solid var(--mist-soft);
+  }
+
+  .meta-row label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--steel);
+    margin-bottom: 5px;
+  }
+
+  .meta-row .value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .meta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: var(--mist-soft);
+    color: var(--graphite);
+  }
+  .meta-badge.on { background: var(--accent); color: var(--white); }
+
+  .repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    background: var(--pearl);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .repo-link:hover { border-color: var(--steel); background: var(--mist-soft); }
+  .repo-link svg { stroke: var(--graphite); flex-shrink: 0; }
+
+  .timeline-card {
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+  }
+
+  .timeline { position: relative; padding-left: 26px; }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--mist);
+  }
+
+  .timeline-item { position: relative; padding-bottom: 26px; }
+  .timeline-item:last-child { padding-bottom: 0; }
+
+  .timeline-dot {
+    position: absolute;
+    left: -26px;
+    top: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2.5px solid var(--white);
+    box-shadow: 0 0 0 1.5px var(--accent);
+  }
+  .timeline-item:not(:first-child) .timeline-dot {
+    background: var(--white);
+    box-shadow: 0 0 0 1.5px var(--mist);
+  }
+
+  .timeline-date {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--steel);
+    margin-bottom: 5px;
+  }
+
+  .timeline-text {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--graphite);
+    line-height: 1.55;
+  }
+
+  .table-card {
+    background: var(--white);
+    border: 1.5px solid var(--mist);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    text-align: left;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--steel);
+    padding: 16px 28px;
+    border-bottom: 1.5px solid var(--mist);
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  tbody tr:hover { background: var(--pearl); }
+
+  tbody tr:not(:last-child) td { border-bottom: 1px solid var(--mist-soft); }
+
+  tbody td {
+    padding: 16px 28px;
+    vertical-align: middle;
+  }
+
+  .nav-item.active {
+    background: var(--accent);
+    color: var(--white);
+    box-shadow: 0 6px 16px rgba(224,0,52,0.28);
+  }
+  .nav-item.active svg { stroke: var(--white); }
+
+  .person-name { font-size: 14px; font-weight: 700; color: var(--ink); }
+  .person-role { font-size: 12.5px; font-weight: 500; color: var(--steel); margin-top: 2px; }
+
+  .area-tag {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--graphite);
+  }
+  .area-tag.empty { color: var(--mist); font-weight: 500; }
+
+  @media (max-width: 900px) {
+    .related-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .profile-card { flex-direction: column; align-items: flex-start; text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="assets/logo.png" alt="Centro Ibero Meneses">
+    </div>
+
+        <div class="nav-scroll">
+    <nav>
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+        Áreas
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Personas
+        <svg class="chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+
+      <button class="nav-item active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        Proyectos
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
+        </svg>
+        Casos
+        <svg class="chevron" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.7 6.3a4 4 0 1 1-5.4 5.4L2 19v3h3l7.3-7.3"/>
+          <path d="M17.5 3.5 20.5 6.5"/><path d="M15 9l5-5"/>
+        </svg>
+        Talleres
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/>
+        </svg>
+        Colonias
+      </button>
+
+      <button class="nav-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-7h6v7"/><path d="M4 12h16"/>
+        </svg>
+        Espacios históricos
+      </button>
+    </nav>
+    </div>
+
+      <div class="sidebar-logout">
+        <button class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>
+          </svg>
+          Cerrar sesión
+        </button>
+      </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <button class="back-btn" title="Ir al menú principal">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5 12 2l9 7.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-6h-2v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1Z"/>
+        </svg>
+      </button>
+
+      <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Mostrar u ocultar menú">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="16" rx="2.5"/>
+          <path d="M9.5 4v16"/>
+        </svg>
+      </button>
+
+      <div class="search-shell">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" placeholder="Buscar personas, proyectos, talleres…">
+      </div>
+
+      <div class="user-chip">
+        <div class="avatar">LG</div>
+        <span>Leo González</span>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="breadcrumb">
+        <a href="sistema_proyectos.html" class="breadcrumb-back" title="Volver a Proyectos">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/>
+          </svg>
+        </a>
+        <a href="sistema_proyectos.html">Proyectos</a>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+        <span class="current">Huertos Comunitarios</span>
+      </div>
+
+      <div class="content-header">
+        <div>
+          <h1>Huertos Comunitarios</h1>
+          <p>Ficha de proyecto</p>
+        </div>
+
+        <div class="header-actions">
+          <button class="btn-outline">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+            </svg>
+            Editar
+          </button>
+          <button class="btn-danger">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6"/><path d="M14 11v6"/>
+            </svg>
+            Borrar
+          </button>
+        </div>
+      </div>
+
+      <div class="doc-layout">
+        <div class="doc-card">
+          <div class="doc-section">
+            <h3>Antecedentes</h3>
+            <p>Varias colonias del Pueblo Santa Fe reportaron falta de acceso a alimentos frescos y espacios verdes comunitarios durante los diagnósticos realizados por el centro en 2024.</p>
+          </div>
+          <div class="doc-section">
+            <h3>Objetivos</h3>
+            <p>Habilitar huertos comunitarios en al menos dos colonias, capacitar a familias en producción de alimentos a pequeña escala, y fomentar el uso de espacios públicos para actividades colectivas.</p>
+          </div>
+          <div class="doc-section">
+            <h3>Alcance</h3>
+            <p>El proyecto cubre inicialmente las colonias Loma Bonita y Vista Hermosa, con posibilidad de extenderse a colonias vecinas conforme se consolide el primer huerto piloto.</p>
+          </div>
+          <div class="doc-section">
+            <h3>Evaluación</h3>
+            <p class="empty">— aún sin evaluación registrada, el proyecto sigue en curso</p>
+          </div>
+        </div>
+
+        <div class="meta-card">
+          <div class="meta-row">
+            <label>Fecha de inicio</label>
+            <div class="value">15 de marzo, 2025</div>
+          </div>
+          <div class="meta-row">
+            <label>Fecha de fin</label>
+            <div class="value">En curso</div>
+          </div>
+          <div class="meta-row">
+            <label>Estado</label>
+            <span class="meta-badge on">Activo</span>
+          </div>
+          <div class="meta-row">
+            <label>Líder</label>
+            <div class="value">María Torres Salinas</div>
+          </div>
+          <div class="meta-row">
+            <label>Colonias</label>
+            <div class="simple-tag-list">
+              <span class="tag">Colonia 1</span>
+              <span class="tag">Colonia 2</span>
+            </div>
+          </div>
+          <div class="meta-row">
+            <label>Áreas</label>
+            <div class="simple-tag-list">
+              <span class="tag">Nutrición Comunitaria</span>
+            </div>
+          </div>
+          <div class="meta-row">
+            <label>Destacado</label>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="#E00034" stroke="#E00034" stroke-width="1.5" stroke-linejoin="round">
+              <path d="M12 2.5l2.9 6.3 6.8.7-5.1 4.6 1.5 6.7L12 17.6l-6.1 3.2 1.5-6.7-5.1-4.6 6.8-.7Z"/>
+            </svg>
+          </div>
+          <div class="meta-row">
+            <label>Repositorio</label>
+            <a href="#" class="repo-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/>
+                <path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/>
+              </svg>
+              Ver repositorio
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h3>Participantes</h3>
+        <button class="btn-outline btn-small">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"/><path d="M5 12h14"/>
+          </svg>
+          Agregar participante
+        </button>
+      </div>
+
+      <div class="table-card" style="margin-bottom: 32px;">
+        <div style="padding: 6px 24px;">
+          <div class="related-row">
+            <span class="name">María Torres Salinas</span>
+            <span class="role-badge lider">Líder</span>
+          </div>
+          <div class="related-row">
+            <span class="name">Sofía Ramírez Duarte</span>
+            <span class="role-badge participante">Participante</span>
+          </div>
+          <div class="related-row">
+            <span class="name">Diego Martínez Cobos</span>
+            <span class="role-badge participante">Participante</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h3>Historial</h3>
+        <button class="btn-outline btn-small">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"/><path d="M5 12h14"/>
+          </svg>
+          Nuevo reporte
+        </button>
+      </div>
+
+      <div class="timeline-card">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">20 de julio, 2026</div>
+            <p class="timeline-text">Se sembraron los primeros almácigos de jitomate y calabaza en el terreno de la colonia Loma Bonita.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2 de junio, 2026</div>
+            <p class="timeline-text">Reunión con vecinos de Loma Bonita para definir el terreno disponible y acordar horarios de riego compartido.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">15 de marzo, 2025</div>
+            <p class="timeline-text">Arranque oficial del proyecto con recorrido por las colonias participantes.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <script>
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+    const MOBILE_BREAKPOINT = 900;
+
+    function toggleSidebar() {
+      document.body.classList.toggle('sidebar-toggled');
+    }
+
+    function closeSidebar() {
+      document.body.classList.remove('sidebar-toggled');
+    }
+
+    sidebarToggleBtn.addEventListener('click', toggleSidebar);
+    sidebarBackdrop.addEventListener('click', closeSidebar);
+
+    // Al cruzar el breakpoint, se resetea el estado para evitar confusiones
+    // (p.ej. que quede "colapsada" en desktop y luego aparezca oculta en móvil, o viceversa)
+    let wasMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+    window.addEventListener('resize', () => {
+      const isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+      if (isMobile !== wasMobile) {
+        closeSidebar();
+        wasMobile = isMobile;
+      }
+    });
+  </script>
+
+</body>
+</html>
