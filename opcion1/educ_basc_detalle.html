@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Educación Básica · Centro Ibero Meneses</title>
+<title>José Castillo (Educación básica) · Centro Ibero Meneses</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -701,257 +701,6 @@
     padding: 8px 4px;
   }
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 32px 0 14px;
-  }
-  .section-header h3 {
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--ink);
-    letter-spacing: -0.005em;
-  }
-
-  .btn-small {
-    padding: 9px 16px 9px 13px;
-    font-size: 13px;
-  }
-
-  .current-badge {
-    display: inline-block;
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    background: var(--ink);
-    color: var(--white);
-    padding: 3px 9px;
-    border-radius: 999px;
-    margin-left: 8px;
-    vertical-align: middle;
-  }
-
-  .participations-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .participation-item {
-    background: var(--white);
-    border: 1.5px solid var(--mist);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-  }
-
-  .participation-summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    padding: 18px 22px;
-    cursor: pointer;
-    list-style: none;
-  }
-  .participation-summary::-webkit-details-marker { display: none; }
-  .participation-summary::marker { content: ""; }
-
-  .participation-summary:hover { background: var(--pearl); }
-
-  .participation-item[open] > .participation-summary {
-    border-bottom: 1.5px solid var(--mist);
-  }
-
-  .chevron-icon {
-    stroke: var(--steel);
-    flex-shrink: 0;
-    transition: transform 0.2s ease;
-  }
-  .participation-item[open] .chevron-icon { transform: rotate(180deg); }
-
-  .participation-body {
-    padding: 18px 22px 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .mini-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--steel);
-    margin-top: 10px;
-  }
-  .mini-label:first-child { margin-top: 0; }
-
-  .participation-text {
-    font-size: 13.5px;
-    font-weight: 500;
-    color: var(--graphite);
-    line-height: 1.5;
-    margin-bottom: 4px;
-  }
-
-  .doc-layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
-    align-items: start;
-    margin-bottom: 32px;
-  }
-
-  @media (max-width: 880px) {
-    .doc-layout { grid-template-columns: 1fr; }
-  }
-
-  .doc-card {
-    background: var(--white);
-    border: 1.5px solid var(--mist);
-    border-radius: var(--radius-lg);
-    padding: 8px 32px;
-  }
-
-  .doc-section {
-    padding: 24px 0;
-  }
-  .doc-section:not(:last-child) {
-    border-bottom: 1.5px solid var(--mist-soft);
-  }
-
-  .doc-section h3 {
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--steel);
-    margin-bottom: 10px;
-  }
-
-  .doc-section p {
-    font-size: 14.5px;
-    font-weight: 500;
-    color: var(--graphite);
-    line-height: 1.65;
-  }
-
-  .doc-section p.empty { color: var(--mist); font-style: normal; }
-
-  .meta-card {
-    background: var(--white);
-    border: 1.5px solid var(--mist);
-    border-radius: var(--radius-lg);
-    padding: 26px 24px;
-    position: sticky;
-    top: 24px;
-  }
-
-  .meta-row {
-    padding: 13px 0;
-  }
-  .meta-row:not(:last-child) {
-    border-bottom: 1px solid var(--mist-soft);
-  }
-
-  .meta-row label {
-    display: block;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--steel);
-    margin-bottom: 5px;
-  }
-
-  .meta-row .value {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  .meta-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 4px 11px;
-    border-radius: 999px;
-    background: var(--mist-soft);
-    color: var(--graphite);
-  }
-  .meta-badge.on { background: var(--ink); color: var(--white); }
-
-  .repo-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    text-decoration: none;
-    background: var(--pearl);
-    border: 1.5px solid var(--mist);
-    border-radius: var(--radius-sm);
-    padding: 8px 12px;
-    transition: border-color 0.15s ease, background 0.15s ease;
-  }
-  .repo-link:hover { border-color: var(--steel); background: var(--mist-soft); }
-  .repo-link svg { stroke: var(--graphite); flex-shrink: 0; }
-
-  .timeline-card {
-    background: var(--white);
-    border: 1.5px solid var(--mist);
-    border-radius: var(--radius-lg);
-    padding: 28px 32px;
-  }
-
-  .timeline { position: relative; padding-left: 26px; }
-  .timeline::before {
-    content: "";
-    position: absolute;
-    left: 5px;
-    top: 6px;
-    bottom: 6px;
-    width: 2px;
-    background: var(--mist);
-  }
-
-  .timeline-item { position: relative; padding-bottom: 26px; }
-  .timeline-item:last-child { padding-bottom: 0; }
-
-  .timeline-dot {
-    position: absolute;
-    left: -26px;
-    top: 3px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: var(--ink);
-    border: 2.5px solid var(--white);
-    box-shadow: 0 0 0 1.5px var(--ink);
-  }
-  .timeline-item:not(:first-child) .timeline-dot {
-    background: var(--white);
-    box-shadow: 0 0 0 1.5px var(--mist);
-  }
-
-  .timeline-date {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--steel);
-    margin-bottom: 5px;
-  }
-
-  .timeline-text {
-    font-size: 13.5px;
-    font-weight: 500;
-    color: var(--graphite);
-    line-height: 1.55;
-  }
-
   .table-card {
     background: var(--white);
     border: 1.5px solid var(--mist);
@@ -984,12 +733,6 @@
     padding: 16px 28px;
     vertical-align: middle;
   }
-
-  .nav-item.active {
-    background: var(--mist-soft);
-    color: var(--ink);
-  }
-  .nav-item.active svg { stroke: var(--ink); }
 
   .person-name { font-size: 14px; font-weight: 700; color: var(--ink); }
   .person-role { font-size: 12.5px; font-weight: 500; color: var(--steel); margin-top: 2px; }
@@ -1040,10 +783,10 @@
       </button>
 
       <div class="submenu">
-              <a href="sistema_centro.html" class="sub-item">Centro</a>
-              <a href="sistema_externas.html" class="sub-item">Externas</a>
-              <a href="sistema_comunidad.html" class="sub-item">Comunidad</a>
-      </div>
+        <a href="sistema_centro.html" class="sub-item">Centro</a>
+        <a href="sistema_externas.html" class="sub-item">Externas</a>
+        <a href="sistema_comunidad.html" class="sub-item">Comunidad</a>
+    </div>
 
       <button class="nav-item" onclick="window.location.href='sistema_proyectos.html'">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1052,7 +795,7 @@
         Proyectos
       </button>
 
-      <button class="nav-item">
+      <button class="nav-item parent-active">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
         </svg>
@@ -1099,7 +842,7 @@
         </a>
       </div>
 
-            <button class="nav-item parent-active">
+      <button class="nav-item parent-active">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
           <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
@@ -1139,8 +882,7 @@
       </button>
     </nav>
     </div>
-
-           <div class="sidebar-logout">
+      <div class="sidebar-logout">
         <button class="nav-item" onclick="window.location.href='login.html'">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/>
@@ -1179,73 +921,53 @@
     </header>
 
     <main class="content">
-      <div class="content-header">
-        <div>
-          <h1>Educación básica</h1>
-          <p>Alumnos de cursos de educación básica</p>
-        </div>
-
-        <button class="btn-new">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 5v14"/><path d="M5 12h14"/>
+      <div class="breadcrumb">
+        <a href="sistema_educ_basc.html" class="breadcrumb-back" title="Volver a Personas de la comunidad">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/><path d="M11 18l-6-6 6-6"/>
           </svg>
-          Nuevo registro
-        </button>
+        </a>
+        <a href="sistema_educ_basc.html">Educación básica</a>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6l6 6-6 6"/>
+        </svg>
+        <span class="current">José Castillo Gaitan</span>
       </div>
 
-      <div class="table-toolbar">
-        <div class="table-search">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/>
-          </svg>
-          <input type="text" placeholder="Buscar por nombre…">
+      <div class="content-header">
+        <div>
+          <h1>José Castillo Gaitan</h1>
+          <p>Ficha académica</p>
         </div>
-
-        <button class="btn-filter">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/>
-          </svg>
-          Filtro
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 9l6 6 6-6"/>
-          </svg>
-        </button>
       </div>
 
       <div class="table-card">
         <table>
           <thead>
             <tr>
-              <th>Nombre</th>
+              <th>Materia</th>
+              <th>Calificación</th>
             </tr>
           </thead>
           <tbody>
-            <tr onclick="window.location.href='educ_basc_detalle.html'">
+            <tr>
               <td>
-                <div class="person-name">José Castillo Gaitan</div>
-                <div class="person-role">-</div>
+                <div class="person-name">Lectura y esctritura I</div>
+                <div class="person-role">En curso</div>
               </td>
+              <td><span class="area-tag empty">-</span></td>
             </tr>
             <tr>
               <td>
-                <div class="person-name">María Gamboa Mayorga</div>
-                <div class="person-role">-</div>
+                <div class="person-name">Matemáticas I</div>
+                <div class="person-role">Aprobada</div>
               </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="person-name">Paulo Gómez Herrera</div>
-                <div class="person-role">-</div>
-            </tr>
-            <tr>
-              <td>
-                <div class="person-name">Emiliano Siénega Ortiz</div>
-                <div class="person-role">-</div>
-              </td>
+              <td><span class="area-tag">8.5</span></td>
             </tr>
           </tbody>
         </table>
       </div>
+
     </main>
   </div>
 
