@@ -62,32 +62,12 @@
       </button>
 
       <div class="submenu">
-        <a href="sistema_casos_medicas.html" class="sub-item icon-sub">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 14c1.5-2 2-3.5 2-5a5 5 0 0 0-9-3 5 5 0 0 0-9 3c0 5.5 9 12 9 12s3-2.2 5.3-4.8"/>
-            <path d="M17 17l2 2 4-4"/>
-          </svg>
-          Consultas médicas
-        </a>
-        <a href="#" class="sub-item icon-sub">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3c-1 3-4 4-4 8a4 4 0 0 0 8 0c0-4-3-5-4-8Z"/><path d="M12 13v8"/>
-          </svg>
-          Consultas nutricionales
-        </a>
         <a href="#" class="sub-item icon-sub">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 4a5 5 0 0 1 5 5c0 2-1 3-1 5h-8c0-2-1-3-1-5a5 5 0 0 1 5-5Z"/>
             <path d="M9 18h6"/><path d="M10 21h4"/>
           </svg>
           Consultas psicopedagógicas
-        </a>
-        <a href="#" class="sub-item icon-sub">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M8 13V7a2 2 0 0 1 4 0"/><path d="M12 12V6a2 2 0 0 1 4 0v7"/>
-            <path d="M16 13V8a2 2 0 0 1 4 0v6a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.5L4 17"/>
-          </svg>
-          Acompañamiento psicosocial
         </a>
         <a href="#" class="sub-item icon-sub">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -234,7 +214,7 @@
         <div class="meta-card">
           <div class="meta-row">
             <label>Fecha de inicio</label>
-            <div class="value">10 de enero, 2025</div>
+            <div class="value">15 de marzo, 2025</div>
           </div>
           <div class="meta-row">
             <label>Estado</label>
@@ -243,6 +223,35 @@
           <div class="meta-row">
             <label>Generaciones</label>
             <div class="value">3</div>
+          </div>
+          <div class="meta-row">
+            <label>Responsable</label>
+            <div class="value">María Torres Salinas</div>
+          </div>
+          <div class="meta-row">
+            <label>Áreas</label>
+            <div class="simple-tag-list">
+              <span class="tag">Nutrición Comunitaria</span>
+            </div>
+          </div>
+          <div class="meta-row">
+            <label>Ejes de acción</label>
+            <div class="simple-tag-list">
+              <span class="tag">Eje 1</span>
+              <span class="tag">Eje 2</span>
+            </div>
+          </div>
+          <div class="meta-row">
+            <label>Auditable</label>
+            <div class="value">Sí</div>
+            <br>
+            <a href="#" class="repo-link">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/>
+                <path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/>
+              </svg>
+              Ver repositorio
+            </a>
           </div>
         </div>
       </div>
@@ -279,6 +288,37 @@
             </svg>
             14 participantes
           </div>
+          <button type="button" class="breakdown-toggle" onclick="toggleBreakdown(this)">
+            Ver desglose de participantes
+            <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="generation-breakdown" hidden>
+            <div class="breakdown-row">
+              <span class="mini-label">Género</span>
+              <div class="simple-tag-list">
+                <span class="tag">8 mujeres</span>
+                <span class="tag">6 hombres</span>
+              </div>
+            </div>
+            <div class="breakdown-row">
+              <span class="mini-label">Colonias</span>
+              <div class="simple-tag-list">
+                <span class="tag">Colonia 1 (5)</span>
+                <span class="tag">Colonia 2 (4)</span>
+                <span class="tag">Colonia 3 (5)</span>
+              </div>
+            </div>
+            <div class="breakdown-row">
+              <span class="mini-label">Rangos de edad</span>
+              <div class="simple-tag-list">
+                <span class="tag">12–17 años (3)</span>
+                <span class="tag">18–25 años (6)</span>
+                <span class="tag">26–40 años (5)</span>
+              </div>
+            </div>
+          </div>
           <div class="generation-eval">
             <span class="mini-label">Evaluación</span>
             <p class="empty">— aún sin evaluación registrada, el grupo sigue en curso</p>
@@ -306,6 +346,35 @@
             </svg>
             9 participantes
           </div>
+                    <button type="button" class="breakdown-toggle" onclick="toggleBreakdown(this)">
+            Ver desglose de participantes
+            <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="generation-breakdown" hidden>
+            <div class="breakdown-row">
+              <span class="mini-label">Género</span>
+              <div class="simple-tag-list">
+                <span class="tag">8 mujeres</span>
+                <span class="tag">1 hombres</span>
+              </div>
+            </div>
+            <div class="breakdown-row">
+              <span class="mini-label">Colonias</span>
+              <div class="simple-tag-list">
+                <span class="tag">Colonia 1 (5)</span>
+                <span class="tag">Colonia 2 (4)</span>
+              </div>
+            </div>
+            <div class="breakdown-row">
+              <span class="mini-label">Rangos de edad</span>
+              <div class="simple-tag-list">
+                <span class="tag">12–17 años (3)</span>
+                <span class="tag">26–40 años (6)</span>
+              </div>
+            </div>
+          </div>
         <div class="generation-eval">
           <span class="mini-label">Evaluación</span>
           <p class="empty">— aún sin evaluación registrada, el grupo sigue en curso</p>
@@ -332,6 +401,37 @@
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
             11 participantes
+          </div>
+                    <button type="button" class="breakdown-toggle" onclick="toggleBreakdown(this)">
+            Ver desglose de participantes
+            <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="generation-breakdown" hidden>
+            <div class="breakdown-row">
+              <span class="mini-label">Género</span>
+              <div class="simple-tag-list">
+                <span class="tag">3 mujeres</span>
+                <span class="tag">8 hombres</span>
+              </div>
+            </div>
+            <div class="breakdown-row">
+              <span class="mini-label">Colonias</span>
+              <div class="simple-tag-list">
+                <span class="tag">Colonia 1 (5)</span>
+                <span class="tag">Colonia 2 (4)</span>
+                <span class="tag">Colonia 3 (2)</span>
+              </div>
+            </div>
+            <div class="breakdown-row">
+              <span class="mini-label">Rangos de edad</span>
+              <div class="simple-tag-list">
+                <span class="tag">12–17 años (3)</span>
+                <span class="tag">18–25 años (6)</span>
+                <span class="tag">26–40 años (2)</span>
+              </div>
+            </div>
           </div>
           <div class="generation-eval">
           <span class="mini-label">Evaluación</span>
@@ -370,6 +470,18 @@
         wasMobile = isMobile;
       }
     });
+
+    function toggleBreakdown(btn) {
+      const panel = btn.nextElementSibling;
+      if (panel.hasAttribute('hidden')) {
+        panel.removeAttribute('hidden');
+        btn.classList.add('open');
+      } else {
+        panel.setAttribute('hidden', '');
+        btn.classList.remove('open');
+      }
+    }
+
   </script>
 
 </body>
